@@ -38,16 +38,15 @@ public class QualTele extends LinearOpMode {
     }
 
     public void intake() {
-        front.setPower(Boolean.compare(gamepad1.x, true));
-        back.setPower(Boolean.compare(gamepad1.x, true));
+        front.setPower(Boolean.compare(gamepad1.x, true)); // 1 if true else 0
+        back.setPower(Boolean.compare(gamepad1.x, true)); // 1 if true else 0
     }
 
     public void outtake() {
-        front.setPower(Boolean.compare(gamepad1.a, true));
-        back.setPower(Boolean.compare(gamepad1.a, true));
-        blocker.setPosition(0.8 * Boolean.compare(gamepad1.a, true));
-        shoot.setPower(Boolean.compare(gamepad1.a, true))
-    }
+        front.setPower(Boolean.compare(gamepad1.a, true)); // 1 if true else 0
+        back.setPower(Boolean.compare(gamepad1.a, true)); // 1 if true else 0
+        blocker.setPosition(0.8 * Boolean.compare(gamepad1.a, true)); // 0.8 if true else 0
+        shoot.setPower(Boolean.compare(gamepad1.a, true)) // 1 if true else 0    }
 
     public void doDrive(double ctrlX, double ctrlY, double ctrlYaw) {
         if (Math.abs(ctrlY) < 0.1) {
