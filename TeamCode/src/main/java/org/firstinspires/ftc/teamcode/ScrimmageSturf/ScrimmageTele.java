@@ -1,5 +1,5 @@
 // used to be TeleopFromHardware
-package org.firstinspires.ftc.teamcode.QualifierScripts;
+package org.firstinspires.ftc.teamcode.ScrimmageSturf;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -8,28 +8,35 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 
 @TeleOp
-public class QualTele extends LinearOpMode {
+public class ScrimmageTele extends LinearOpMode {
     public double ctrlX, ctrlY, ctrlYaw;
 
     private Servo blocker;
-    private DcMotor front;
-    private DcMotor back;
+    private DcMotor intakeFront, intakeBack;
     private DcMotor shoot;
+    private DcMotor frontRight, frontLeft, backRight, backLeft;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
 
 
         blocker = hardwareMap.get(Servo.class, "blocker");
-        front = hardwareMap.get(DcMotor.class, "front");
-        back = hardwareMap.get(DcMotor.class, "back");
+        intakeFront = hardwareMap.get(DcMotor.class, "front");
+        intakeBack = hardwareMap.get(DcMotor.class, "back");
         shoot = hardwareMap.get(DcMotor.class, "shoot");
+
+        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+        backRight = hardwareMap.get(DcMotor.class, "backRight");
+        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+        waitForStart();
         while (opModeIsActive()) {
             ctrlX = gamepad1.left_stick_x;
             ctrlY = gamepad1.left_stick_y;
             ctrlYaw = gamepad1.right_stick_x;
 
-            doDrive();
+            doDrive(ctrlX, ctrlY, ctrlYaw);
             intake();
             outtake();
 
@@ -38,15 +45,16 @@ public class QualTele extends LinearOpMode {
     }
 
     public void intake() {
-        front.setPower(Boolean.compare(gamepad1.x, true)); // 1 if true else 0
-        back.setPower(Boolean.compare(gamepad1.x, true)); // 1 if true else 0
+        intakeFront.setPower(Boolean.compare(gamepad1.x, true)+1); // 1 if true else 0
+        intakeBack.setPower(Boolean.compare(gamepad1.x, true)+1); // 1 if true else 0
     }
 
     public void outtake() {
-        front.setPower(Boolean.compare(gamepad1.a, true)); // 1 if true else 0
-        back.setPower(Boolean.compare(gamepad1.a, true)); // 1 if true else 0
-        blocker.setPosition(0.8 * Boolean.compare(gamepad1.a, true)); // 0.8 if true else 0
-        shoot.setPower(Boolean.compare(gamepad1.a, true)) // 1 if true else 0    }
+        intakeFront.setPower(Boolean.compare(gamepad1.a, true)+1); // 1 if true else 0
+        intakeBack.setPower(Boolean.compare(gamepad1.a, true)+1); // 1 if true else 0
+        blocker.setPosition(0.8 * (1 + Boolean.compare(gamepad1.a, true))); // 0.8 if true else 0
+        shoot.setPower(-Boolean.compare(gamepad1.a, false)); // -1 if true else 0
+    }
 
     public void doDrive(double ctrlX, double ctrlY, double ctrlYaw) {
         if (Math.abs(ctrlY) < 0.1) {
@@ -58,7 +66,7 @@ public class QualTele extends LinearOpMode {
         if (Math.abs(ctrlYaw) < 0.1) {
             ctrlYaw = 0;
         } else if (Math.abs(ctrlYaw) < 0.5) {
-            ctrlYaw = Math.signum(ctrlYaw) * 0.5;
+            ctrlYaw = Math.signum(ctrlYaw) * 0.35;
         }
 
         double flPwr = ctrlY - ctrlYaw - ctrlX;
@@ -69,8 +77,8 @@ public class QualTele extends LinearOpMode {
         double denominator = Math.max(Math.max(Math.max(flPwr, frPwr), Math.max(blPwr, brPwr)), 1);
 
         frontLeft.setPower(flPwr / denominator);
-        frontRight.setPower(frPwr / denominator);
+        frontRight.setPower(-frPwr / denominator);
         backLeft.setPower(blPwr / denominator);
-        backRight.setPower(brPwr / denominator);
+        backRight.setPower(-brPwr / denominator);
     }
 }
