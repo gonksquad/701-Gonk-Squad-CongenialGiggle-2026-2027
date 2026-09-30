@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.ScrimmageSturf;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 
@@ -27,9 +28,13 @@ public class ScrimmageTele extends LinearOpMode {
         shoot = hardwareMap.get(DcMotor.class, "shoot");
 
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
+            frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+            //frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+            backRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
+            //backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
         while (opModeIsActive()) {
             ctrlX = gamepad1.left_stick_x;
@@ -77,8 +82,8 @@ public class ScrimmageTele extends LinearOpMode {
         double denominator = Math.max(Math.max(Math.max(flPwr, frPwr), Math.max(blPwr, brPwr)), 1);
 
         frontLeft.setPower(flPwr / denominator * 0.5);
-        frontRight.setPower(-frPwr / denominator * 0.5);
+        frontRight.setPower(frPwr / denominator * 0.5);
         backLeft.setPower(blPwr / denominator * 0.5);
-        backRight.setPower(-brPwr / denominator * 0.5);
+        backRight.setPower(brPwr / denominator * 0.5);
     }
 }
