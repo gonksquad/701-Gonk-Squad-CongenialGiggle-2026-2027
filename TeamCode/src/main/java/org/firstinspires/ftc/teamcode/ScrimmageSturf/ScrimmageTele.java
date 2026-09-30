@@ -76,9 +76,9 @@ public class ScrimmageTele extends LinearOpMode {
 
         double denominator = Math.max(Math.max(Math.max(flPwr, frPwr), Math.max(blPwr, brPwr)), 1);
 
-        frontLeft.setPower(flPwr / denominator);
-        frontRight.setPower(-frPwr / denominator);
-        backLeft.setPower(blPwr / denominator);
-        backRight.setPower(-brPwr / denominator);
+        frontLeft.setPower(flPwr / denominator * 0.5);
+        frontRight.setPower(-frPwr / denominator * 0.5);
+        backLeft.setPower(blPwr / denominator * 0.5);
+        backRight.setPower(-brPwr / denominator * 0.5);
     }
 }
