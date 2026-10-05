@@ -29,12 +29,16 @@ public class ScrimmageTele extends LinearOpMode {
 
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
             frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
             //frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight = hardwareMap.get(DcMotor.class, "backRight");
             backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+            backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
             //backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+            backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         waitForStart();
         while (opModeIsActive()) {
             ctrlX = gamepad1.left_stick_x;
@@ -50,15 +54,17 @@ public class ScrimmageTele extends LinearOpMode {
     }
 
     public void intake() {
-        intakeFront.setPower(Boolean.compare(gamepad1.x, true)+1); // 1 if true else 0
-        intakeBack.setPower(Boolean.compare(gamepad1.x, true)+1); // 1 if true else 0
+        int boolToInt = Boolean.compare(gamepad1.x, true)+1;
+        intakeFront.setPower(boolToInt); // 1 if true else 0
+        intakeBack.setPower(boolToInt); // 1 if true else 0
     }
 
     public void outtake() {
-        intakeFront.setPower(Boolean.compare(gamepad1.a, true)+1); // 1 if true else 0
-        intakeBack.setPower(Boolean.compare(gamepad1.a, true)+1); // 1 if true else 0
-        blocker.setPosition(0.8 * (1 + Boolean.compare(gamepad1.a, true))); // 0.8 if true else 0
-        shoot.setPower(-Boolean.compare(gamepad1.a, false)); // -1 if true else 0
+        int boolToInt = Boolean.compare(gamepad1.a, true)+1; // 1 if true else 0
+        intakeFront.setPower(boolToInt);
+        intakeBack.setPower(boolToInt);
+        blocker.setPosition(0.8 * boolToInt); // 0.8 if true else 0
+        shoot.setPower(-boolToInt); // -1 if true else 0
     }
 
     public void doDrive(double ctrlX, double ctrlY, double ctrlYaw) {
