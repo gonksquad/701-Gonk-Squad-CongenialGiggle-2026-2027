@@ -46,25 +46,41 @@ public class ScrimmageTele extends LinearOpMode {
             ctrlYaw = gamepad1.right_stick_x;
 
             doDrive(ctrlX, ctrlY, ctrlYaw);
-            intake();
             outtake();
 
             telemetry.update();
         }
     }
 
-    public void intake() {
-        int boolToInt = Boolean.compare(gamepad1.x, true)+1;
-        intakeFront.setPower(boolToInt); // 1 if true else 0
-        intakeBack.setPower(boolToInt); // 1 if true else 0
-    }
+    /*public void intake() {
+        boolToIntFront = Boolean.compare(gamepad1.left_trigger > 0.01, true)+1;
+        boolToIntBack= Boolean.compare(gamepad1.right_trigger > 0.01, true)+1;
+
+        telemetry.addData("front intake", intakeFront);
+        telemetry.addData("back intake", boolToIntBack);
+    }*/
 
     public void outtake() {
+        int boolToIntFront = Boolean.compare(gamepad1.left_trigger > 0.01, true)+1;
+        int boolToIntBack= Boolean.compare(gamepad1.right_trigger > 0.01, true)+1;
         int boolToInt = Boolean.compare(gamepad1.a, true)+1; // 1 if true else 0
-        intakeFront.setPower(boolToInt);
-        intakeBack.setPower(boolToInt);
+
+        if(boolToInt != 0) {
+            intakeFront.setPower(boolToInt);
+            intakeBack.setPower(boolToInt);
+        } else {
+            intakeFront.setPower(boolToIntFront);
+            intakeBack.setPower(boolToIntBack);
+        }
+
+        telemetry.addData("front intake", intakeFront);
+        telemetry.addData("back intake", boolToIntBack);
+
         blocker.setPosition(0.8 * boolToInt); // 0.8 if true else 0
         shoot.setPower(-boolToInt); // -1 if true else 0
+
+        telemetry.addData("outtake", boolToInt);
+
     }
 
     public void doDrive(double ctrlX, double ctrlY, double ctrlYaw) {

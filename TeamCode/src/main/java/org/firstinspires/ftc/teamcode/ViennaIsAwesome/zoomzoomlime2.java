@@ -18,7 +18,8 @@ public class zoomzoomlime2 extends LinearOpMode {
         waitForStart();
 
 
-        while(opModeIsActive()) {
-            
+        while (opModeIsActive()) {
+
         }
+    }
 }
