@@ -15,7 +15,7 @@ import com. qualcomm.robotcore.util.ElapsedTime;
 public class hardware {
     private HardwareMap hwMap;
     public DcMotor frontLeft, frontRight, backLeft, backRight;
-    public Limelight3A limelight;
+    public static Limelight3A limelight;
 
     public hardware(HardwareMap hardwareMap) {
         this.hwMap = hardwareMap;
