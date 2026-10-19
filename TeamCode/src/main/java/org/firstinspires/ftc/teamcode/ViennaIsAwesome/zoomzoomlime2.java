@@ -4,6 +4,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.curves.bezier.BezierCurve;
 import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.PedroPathing.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+@Disabled
 public class zoomzoomlime2 extends LinearOpMode {
     public Follower follower; // Pedro Pathing follower instance
     private int pathState; // Current autonomous path state (state machine)
@@ -28,6 +30,9 @@ public class zoomzoomlime2 extends LinearOpMode {
     private double currentX;
     private double currentY;
     private double currentHeading;
+    private double targetX;
+    private double targetY;
+    private double targetHeading;
 
 
 //    pathState currentPathState;
@@ -61,7 +66,7 @@ public class zoomzoomlime2 extends LinearOpMode {
 
         waitForStart();
         while(loop) {
-            LLResult result = hardware.limelight.getLatestResult();
+            LLResult result = Hardware.limelight.getLatestResult();
             if (result != null && result.isValid()) {
                 pollen = true;
                 double tx = result.getTx(); // How far left or right the target is (degrees)
@@ -86,6 +91,7 @@ public class zoomzoomlime2 extends LinearOpMode {
         }
     }
 
+
     public static class Paths {
         public PathChain moveforward;
 
@@ -106,11 +112,15 @@ public class zoomzoomlime2 extends LinearOpMode {
         if (follower.isBusy()) return;
         switch (pathState) {
             case 0:
+                Hardware.limeServoPos();
                 if (pollen = true) {
+
                     currentX = follower.pose().x();
                     currentY = follower.pose().y();
                     currentHeading = follower.pose().heading();
-
+                    targetX = ;
+                    targetY = ;
+                    targetHeading = ;
                     setPathState(1);
                 }
                 else if (pollen = false) {
@@ -138,7 +148,6 @@ public class zoomzoomlime2 extends LinearOpMode {
     public void setPathState(int pState) {
         pathState = pState;
         pathTimer.reset();
->>>>>>> Stashed changes
     }
 }
 
