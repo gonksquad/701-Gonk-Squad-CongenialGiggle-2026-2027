@@ -15,12 +15,22 @@ import static com.pedropathing.ivy.commands.Commands.infinite;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
+
 import com.pedropathing.paths.Path;
+
+import java.util.function.BooleanSupplier;
 
 public class zoomzoomlime3 extends OpMode {
     hardware Hardware = new hardware(hardwareMap);
 
     private Follower follower;
+    private double a = 45; //angle of servo from vertial (0)
+    private double b; //angle of ty
+    private double d = 8; //distance to center of robot
+    private double x; //angle of tx
+    private double distance;
+    private BooleanSupplier pollen;
     private final PoseFactory p = PoseFactory.degrees();
     // our poses (x,y,heading)
     private final Pose startPose = p.of(24, 24, 0);
@@ -33,11 +43,33 @@ public class zoomzoomlime3 extends OpMode {
 
     private Command autoRoutine() {
         return sequential(
-                // Add mechanism commands here.
+                servoPos(),
                 follow(follower, park())
+
         );
     }
 
+    Command servoPos = Hardware.limeservo.setPosition(a/270);
+    public void spinLook() {
+        LLResult result = Hardware.limelight.getLatestResult();
+        if (result != null && result.isValid()) {
+            pollen = true;
+            double tx = result.getTx(); // How far left or right the target is (degrees)
+            double ty = result.getTy(); // How far up or down the target is (degrees)
+            double ta = result.getTa(); // How big the target looks (0%-100% of the image)
+
+            telemetry.addData("Target X", tx);
+            telemetry.addData("Target Y", ty);
+            telemetry.addData("Target Area", ta);
+            telemetry.update();
+        }
+        else {
+            pollen = false;
+            telemetry.addData("Limelight", "No Targets");
+        }
+
+        distance = Math.tan(90-a-b)+d;
+    }
     public double time = 1;
     public LLResult seePollen;
     Command getBallColor = infinite(() -> seePollen = Hardware.limelight.getLatestResult());
@@ -51,8 +83,8 @@ public class zoomzoomlime3 extends OpMode {
         if nothing is found,
         spin idk how much (camera is 12 inches off the ground probably, horizontal FOV is 54.5)
     */
-    Command spinLook = infinite(() -> intake.setPower(1.0))
-            .until(seePollen != null || time > 20);
+    Command spinLook = infinite(() -> Hardware.limeservo.setPosition(1.0))
+            .until(seePollen.get != null || time > 20);
 
     @Override
     public void init() {
@@ -78,6 +110,7 @@ public class zoomzoomlime3 extends OpMode {
         telemetry.addData("Y", follower.pose().y());
         telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
         telemetry.addData("Follower Mode", follower.mode());
+        telemetry.addData("distance", distance);
         telemetry.update();
 
         if (seePollen != null && seePollen.isValid()) {

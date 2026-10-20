@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.ViennaIsAwesome;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import com.pedropathing.controllers.PIDController;
 import com.pedropathing.ivy.Command;
@@ -12,7 +13,10 @@ import java.util.Set;
 public class spinLook implements Command {
     hardware Hardware = new hardware(hardwareMap);
 
-    private final DcMotor armMotor;
+    private double a = 45; //angle of servo from vertial (0)
+    private double b; //angle of ty
+    private double d = 8; //distance to center of robot
+    private double x; //angle of tx
     private final PIDController pid;
     private final double target;
 
@@ -24,12 +28,15 @@ public class spinLook implements Command {
 
     @Override
     public void start() {
-        pid.setTarget(target);
+        double distance = Math.tan(90-a-b)+d;
+        Hardware.limeservo.setPosition(a/270);
+        telemetry.addData("distance", distance);
     }
 
     @Override
     public void execute() {
-        armMotor.setPower(pid.calculate(armMotor.getCurrentPosition()));
+
+        telemetry.update();
     }
 
     @Override
