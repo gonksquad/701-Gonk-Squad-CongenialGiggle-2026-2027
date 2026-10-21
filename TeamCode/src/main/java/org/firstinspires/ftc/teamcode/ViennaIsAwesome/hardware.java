@@ -15,7 +15,8 @@ import com. qualcomm.robotcore.util.ElapsedTime;
 public class hardware {
     private HardwareMap hwMap;
     public DcMotor frontLeft, frontRight, backLeft, backRight;
-    public static Limelight3A limelight;
+    public Servo limeservo;
+    public Limelight3A limelight;
 
     public hardware(HardwareMap hardwareMap) {
         this.hwMap = hardwareMap;
@@ -23,6 +24,8 @@ public class hardware {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
+
+        limeservo = hardwareMap.get(Servo.class, "limeservo");
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -72,5 +75,9 @@ public class hardware {
         frontRight.setPower(frPwr / denominator);
         backLeft.setPower(blPwr / denominator);
         backRight.setPower(brPwr / denominator);
+    }
+
+    public void limeServoPos() {
+        limeservo.setPosition(0);
     }
 }
