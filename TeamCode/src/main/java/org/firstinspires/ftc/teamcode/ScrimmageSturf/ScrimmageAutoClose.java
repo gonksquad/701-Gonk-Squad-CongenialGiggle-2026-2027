@@ -1,10 +1,15 @@
 package org.firstinspires.ftc.teamcode.ScrimmageSturf;
 
+import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
 import static com.pedropathing.api.Paths.*;
+import static java.util.concurrent.locks.LockSupport.park;
+
 import com.pedropathing.api.Paths;
 
 import com.pedropathing.api.PoseFactory;
@@ -24,14 +29,30 @@ public class ScrimmageAutoClose extends OpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(58.4101, 23.3551, 90);
-    private final Pose path1 = poseFactory.of(56, 94, 35.407);
-    private final Pose path1Control1 = poseFactory.of(95, 48, 0);
-    private final Pose path1Control2 = poseFactory.of(24, 72, 0);
-    private final Pose point2 = poseFactory.of(58, 23.5, 33.5356);
-    private final Pose point2Control1 = poseFactory.of(24.2067, 72.373, 0);
-    private final Pose point2Control2 = poseFactory.of(95.7011, 47.7652, 0);
+    private final Pose start = poseFactory.of(56, 8, 90);
+    private final Pose path1 = poseFactory.of(56, 56, 90);
+    private final Pose point2Start = poseFactory.of(56, 56, 90);
+    private final Pose point2 = poseFactory.of(56, 8, 90);
+    private final Pose point3Start = poseFactory.of(56, 8, 90);
+    private final Pose point3 = poseFactory.of(56, 56, 0);
+    private final Pose point4Start = poseFactory.of(56, 56, 0);
+    private final Pose point4 = poseFactory.of(56, 8, 90);
 
+    public Path path1() {
+        return Paths.line(start, path1).linear(start, path1);
+    }
+
+    public Path path2() {
+        return Paths.line(point2Start, point2).linear(point2Start, point2);
+    }
+
+    public Path path3() {
+        return Paths.line(point3Start, point3).linear(point3Start, point3);
+    }
+
+    public Path path4() {
+        return Paths.line(point4Start, point4).linear(point4Start, point4);
+    }
 
     @Override
     public void init() {
@@ -39,13 +60,12 @@ public class ScrimmageAutoClose extends OpMode {
 
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
+        follower.update();
     }
 
     @Override
     public void start() {
-        schedule(follow(follower, path1()));
-        schedule(follow(follower, path2()));
-
+        schedule(autoRoutine());
     }
 
     @Override
@@ -54,11 +74,12 @@ public class ScrimmageAutoClose extends OpMode {
         Scheduler.execute();
     }
 
-    public Path path1() {
-        return Paths.curve(start, path1Control1, path1Control2, path1).tangent();
-    }
-
-    public Path path2() {
-        return Paths.curve(path1, point2Control1, point2Control2, point2).reverseTangent();
+    private Command autoRoutine() {
+        return sequential(
+                follow(follower, path1()),
+                follow(follower, path2()),
+                follow(follower, path3()),
+                follow(follower, path4())
+                );
     }
 }
