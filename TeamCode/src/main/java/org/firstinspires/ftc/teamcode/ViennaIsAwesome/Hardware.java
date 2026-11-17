@@ -1,31 +1,25 @@
 package org.firstinspires.ftc. teamcode.ViennaIsAwesome;
 
-import android.annotation.SuppressLint;
-
 import com.qualcomm.hardware.limelightvision. Limelight3A;
-import com. qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore. hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com. qualcomm.robotcore.hardware.Servo;
-import com. qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
-public class hardware {
+public class Hardware {
     private HardwareMap hwMap;
     public DcMotor frontLeft, frontRight, backLeft, backRight;
     public Servo limeservo;
     public Limelight3A limelight;
 
-    public hardware(HardwareMap hardwareMap) {
+    public Hardware(HardwareMap hardwareMap) {
         this.hwMap = hardwareMap;
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
         backRight = hardwareMap.get(DcMotor.class, "backRight");
 
-        limeservo = hardwareMap.get(Servo.class, "limeservo");
+       limeservo = hardwareMap.get(Servo.class, "limeservo");
 
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -34,8 +28,8 @@ public class hardware {
 
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
     }
 
@@ -78,6 +72,6 @@ public class hardware {
     }
 
     public void limeServoPos() {
-        limeservo.setPosition(0);
+        limeservo.setPosition(0.167);
     }
 }

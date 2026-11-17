@@ -11,6 +11,8 @@ public class zoomzoomlime extends LinearOpMode {
     public void runOpMode() {
         hardware Hardware;
         Hardware = new hardware(hardwareMap);
+        Hardware Hardware;
+        Hardware = new Hardware(hardwareMap);
 
         Hardware.limelight.setPollRateHz(100); // This sets how often we ask Limelight for data (100 times per second)
         Hardware.limelight.start();
