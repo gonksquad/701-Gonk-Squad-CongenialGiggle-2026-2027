@@ -1,3 +1,4 @@
+/*
 package org.firstinspires.ftc.teamcode.ViennaIsAwesome;
 
 import com.pedropathing.api.Paths;
@@ -59,8 +60,11 @@ public class zoomzoomlime3 extends OpMode {
 
         return Paths.line(currentPose, targetPose).linear(currentPose, targetPose);
     }
-    /*for heading could also do currentPose.getHeading() if its pointing in the right
-    direction wien spinLook command stops*/
+*/
+/*for heading could also do currentPose.getHeading() if its pointing in the right
+    direction wien spinLook command stops*//*
+
+
     private Command autoRoutine() {
         return sequential(
                 servoPos,
@@ -79,7 +83,9 @@ public class zoomzoomlime3 extends OpMode {
             follow(follower, spin())
     );
 
-   /*need to spin in a circle until a pollen is spotted within a certain area on the field
+*/
+/*
+need to spin in a circle until a pollen is spotted within a certain area on the field
    1. when looking:
         get robot position on the field (x,y, facing),
         get position of closest pollen relative to robot,
@@ -88,7 +94,9 @@ public class zoomzoomlime3 extends OpMode {
         repeat check etc times,
         if nothing is found,
         spin idk how much (camera is 12 inches off the ground probably, horizontal FOV is 54.5)
-    */
+*//*
+
+
 
     @Override
     public void init() {
@@ -132,3 +140,4 @@ public class zoomzoomlime3 extends OpMode {
         }
     }
 }
+*/
